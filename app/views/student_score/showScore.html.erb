@@ -1,0 +1,38 @@
+<%if @scores != nil%>
+    <table>
+        <tr>
+            <td>subject</td>
+            <td>point</td>
+            <td>grade</td>
+            <td>edit</td>
+            <td>delete</td>
+        </tr>
+    <%max_sub = "None"%>
+    <%max_score = 0%>
+    <%sum_score = 0%>
+    <%count = 0%>
+    <%@scores.each do |s|%>
+        <tr>
+            <td><%=s.subject%></td>
+            <td><%=s.point%></td>
+            <td><%=s.grade%></td>
+            <%url = "/scores/" + s.id.to_s + "/edit"%>
+            <td><%=link_to "edit", url%></td>
+            <td><%=link_to "delete", controller: "student_score", action: "delete", id: s.id, student_id: s.student_id %><td>
+            <%sum_score += s.point%>
+            <%count += 1%>
+            <%if s.point > max_score%>
+                <%max_score = s.point%>
+                <%max_sub = s.subject%>
+            <%end%>
+        </tr>
+        
+    <%end%>
+        <div><%= "The best subject is " + max_sub %></div>
+        <div><%= "The average score is " + (sum_score/count).to_s %></div>
+        <tr>
+        <td><%=link_to "add", controller: "scores", action: "new"%></td>
+        </tr>
+<%else%>
+    <p>this student_id is not found</p>
+<%end%>
